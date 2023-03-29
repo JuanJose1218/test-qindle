@@ -1,0 +1,80 @@
+openapi: 3.0.3
+info:
+  title: Test Qindel API
+  version: '1.0'
+servers:
+  - url: http://localhost:8080
+    description: Inferred Url
+tags:
+  - name: test-qindel-controller
+    description: Test Qindel Controller
+paths:
+  /api/v1/e-commerce/prices/{date}/{productId}/{brandId}:
+    get:
+      tags:
+        - test-qindel-controller
+      summary: getPrices
+      operationId: getPricesUsingGET
+      parameters:
+        - name: date
+          in: path
+          description: fecha inicio de precio
+          required: true
+          style: simple
+          schema:
+            type: string
+            example: 2020-06-14T10:00:00
+        - name: productId
+          in: path
+          description: id de producto
+          required: true
+          style: simple
+          schema:
+            type: integer
+            format: int32
+            example: 35455
+        - name: brandId
+          in: path
+          description: id de cadena
+          required: true
+          style: simple
+          example: 1
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PricesDto'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+components:
+  schemas:
+    PricesDto:
+      title: PricesDto
+      type: object
+      properties:
+        brandId:
+          type: integer
+          format: int32
+        endDate:
+          type: string
+          format: date-time
+        price:
+          type: number
+          format: bigdecimal
+        productId:
+          type: integer
+          format: int32
+        startDate:
+          type: string
+          format: date-time
